@@ -12,12 +12,12 @@ import {
 const router = express.Router();
 
 // User routes
-router.get('/users', getUsers);
-router.get('/users/:id', getUserById);
-router.post('/users', createUser);
-router.put('/users/:id', updateUser);
-router.delete('/users/:id', deleteUser);
-router.post('/users/:userId/friends/:friendId', addFriend);
-router.delete('/users/:userId/friends/:friendId', removeFriend);
+router.get('/users', getUsers); // This will be accessed at /api/users
+router.get('/users/:id', getUserById); // /api/users/:id
+router.post('/users', createUser); // /api/users
+router.put('/users/:id', updateUser); // /api/users/:id
+router.delete('/users/:id', deleteUser); // /api/users/:id
+router.post('/users/:userId/friends/:friendId', addFriend); // /api/users/:userId/friends/:friendId
+router.delete('/users/:userId/friends/:friendId', removeFriend); // /api/users/:userId/friends/:friendId
 
 export default router;

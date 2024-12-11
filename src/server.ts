@@ -1,5 +1,4 @@
 import express from "express";
-import mongoose from "mongoose";
 import userRoutes from "./routes/api/userRoutes";
 import thoughtRoutes from "./routes/api/thoughtRoutes";
 
@@ -11,7 +10,5 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use("/api/users", userRoutes);
 app.use("/api/thoughts", thoughtRoutes);
-
-mongoose.connect("mongodb://127.0.0.1:27017/socialAppDB");
 
 app.listen(PORT, () => console.log(`🌍 Connected on localhost:${PORT}`));

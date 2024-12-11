@@ -1,11 +1,10 @@
-import mongooseConnection from '../config/connection';
 import { Thought, User } from '../models';
+import mongoose from 'mongoose';
 
 const cleanDB = async () => {
     try {
-        mongooseConnection; // Ensure connection is established
-        console.log('Database connection ready');
-
+        await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/social-network', {
+        }); // Ensure connection is established
         await User.deleteMany({});
         await Thought.deleteMany({});
         console.log('Database cleaned');
