@@ -6,7 +6,8 @@
   "scripts": {
     "build": "npx tsc",
     "start": "npm run build && node dist/src/server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "seed": "node dist/src/seeds/index.js"
   },
   "keywords": [],
   "author": "",

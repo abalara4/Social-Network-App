@@ -1,14 +1,13 @@
 import express from "express";
-import userRoutes from "./routes/api/userRoutes";
-import thoughtRoutes from "./routes/api/thoughtRoutes";
+import routes from "./routes";
+import router from "@routes/api";
 
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+router.use(express.json());
+router.use(express.urlencoded({ extended: true }));
 
-app.use("/api/users", userRoutes);
-app.use("/api/thoughts", thoughtRoutes);
+router.use(routes)
 
 app.listen(PORT, () => console.log(`🌍 Connected on localhost:${PORT}`));

@@ -1,4 +1,5 @@
-import express from 'express';
+// userRoutes.ts
+import { Router } from 'express';
 import {
     getUsers,
     getUserById,
@@ -9,15 +10,18 @@ import {
     removeFriend
 } from '../../controllers/userController';
 
-const router = express.Router();
+const router = Router();
 
-// User routes
-router.get('/users', getUsers); // This will be accessed at /api/users
-router.get('/users/:id', getUserById); // /api/users/:id
-router.post('/users', createUser); // /api/users
-router.put('/users/:id', updateUser); // /api/users/:id
-router.delete('/users/:id', deleteUser); // /api/users/:id
-router.post('/users/:userId/friends/:friendId', addFriend); // /api/users/:userId/friends/:friendId
-router.delete('/users/:userId/friends/:friendId', removeFriend); // /api/users/:userId/friends/:friendId
+// Correctly defined GET route for all users
+router.get('/', getUsers);  // This maps to GET /api/users
+router.get('/:id', getUserById);  // This maps to GET /api/users/:id
+router.post('/', createUser);  // This maps to POST /api/users
+router.put('/:id', updateUser);  // This maps to PUT /api/users/:id
+router.delete('/:id', deleteUser);  // This maps to DELETE /api/users/:id
+router.post('/:userId/friends/:friendId', addFriend);  // This maps to POST /api/users/:userId/friends/:friendId
+router.delete('/:userId/friends/:friendId', removeFriend);  // This maps to DELETE /api/users/:userId/friends/:friendId
+
 
 export default router;
+
+
