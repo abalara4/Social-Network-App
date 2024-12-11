@@ -1,96 +1,129 @@
-import { Request, Response, RequestHandler } from 'express';
-import User from '../models/User'; // Import the User model
+// userController.ts
+import { Request, Response } from 'express';
+import User from '../models/User';
 
-// Get all users
-export const getUsers: RequestHandler = async (req, res) => {
+
+export const getUsers = async (req: Request, res: Response) => {
     try {
-        const users = await User.find();
-        res.status(200).json(users);
+        const users = await User.find();  // Fetch all users
+        res.status(200).json(users);  // Send the users as a response
     } catch (error) {
         res.status(500).json({ message: 'Error retrieving users', error });
     }
 };
 
-// Get a single user by ID
-export const getUserById: RequestHandler = async (req, res) => {
+export const getUserById = async (req: Request, res: Response): Promise<void> => {
     try {
-        const user = await User.findById(req.params.id).populate('thoughts').populate('friends');
+        const user = await User.findById(req.params.id);  // Find user by ID
         if (!user) {
-            res.json({ message: 'User not found' });
+            res.status(404).json({ message: 'User not found' });
         }
-        res.status(200).json(user);
+        res.status(200).json(user);  // Send the user as a response
     } catch (error) {
         res.status(500).json({ message: 'Error retrieving user', error });
     }
 };
 
-// Create a new user
-export const createUser: RequestHandler = async (req, res) => {
-    const newUser = new User(req.body);
+export const createUser = async (req: Request, res: Response) => {
     try {
-        const savedUser = await newUser.save();
-        res.status(201).json(savedUser);
+        const user = await User.create(req.body);  // Create a new user
+        res.status(201).json(user);  // Send the new user as a response
     } catch (error) {
-        res.status(400).json({ message: 'Error creating user', error });
+        res.status(500).json({ message: 'Error creating user', error });
     }
 };
 
-// Update a user by ID
-export const updateUser: RequestHandler = async (req, res) => {
+export const updateUser = async (req: Request, res: Response): Promise<void> => {
     try {
-        const updatedUser = await User.findByIdAndUpdate(req.params.id, req.body, { new: true });
-        if (!updatedUser) {
-            res.json({ message: 'User not found' });
+        const userId = req.params.id; // Get the user ID from the URL parameters
+        const updatedData = req.body; // Get the updated data from the request body
+
+        // Update the user in the database
+        const user = await User.findByIdAndUpdate(userId, updatedData, { new: true });
+
+        if (!user) {
+            res.status(404).json({ message: 'User not found' });
+            return; // Exit the function if user is not found
         }
-        res.status(200).json(updatedUser);
+
+        res.status(200).json(user); // Send the updated user as a response
     } catch (error) {
-        res.status(400).json({ message: 'Error updating user', error });
+        res.status(500).json({ message: 'Error updating user', error });
     }
 };
 
-// Delete a user by ID
-export const deleteUser: RequestHandler = async (req, res) => {
+export const deleteUser = async (req: Request, res: Response): Promise<void> => {
     try {
-        const deletedUser = await User.findByIdAndDelete(req.params.id);
-        if (!deletedUser) {
-            res.json({ message: 'User not found' });
+        const userId = req.params.id; // Get the user ID from the URL parameters
+
+        // Attempt to delete the user from the database
+        const user = await User.findByIdAndDelete(userId);
+
+        if (!user) {
+            res.status(404).json({ message: 'User not found' });
+            return; // Exit the function if user is not found
         }
-        res.status(204).send(); // No content to send back
+
+        res.status(200).json({ message: 'User deleted successfully' }); // Send success message
     } catch (error) {
         res.status(500).json({ message: 'Error deleting user', error });
     }
 };
 
-// Add a friend to a user
-export const addFriend: RequestHandler = async (req, res) => {
+export const addFriend = async (req: Request, res: Response): Promise<void> => {
     try {
+        const userId = req.params.id; // Get the user ID from the URL parameters
+        const friendId = req.body.friendId; // Get the friend ID from the request body
+
+        // Validate that friendId is provided
+        if (!friendId) {
+            res.status(400).json({ message: 'Friend ID is required' });
+            return; // Exit the function if friendId is not provided
+        }
+
+        // Find the user and add the friend
         const user = await User.findByIdAndUpdate(
-            req.params.userId,
-            { $addToSet: { friends: req.params.friendId } },
+            userId,
+            { $addToSet: { friends: friendId } }, // Use $addToSet to avoid duplicates
             { new: true }
         );
+
         if (!user) {
-            res.json({ message: 'User not found' });
+            res.status(404).json({ message: 'User not found' });
+            return; // Exit the function if user is not found
         }
-        res.status(200).json(user);
+
+        res.status(200).json(user); // Send the updated user with the new friend
     } catch (error) {
         res.status(500).json({ message: 'Error adding friend', error });
     }
 };
 
-// Remove a friend from a user
-export const removeFriend: RequestHandler = async (req, res) => {
+export const removeFriend = async (req: Request, res: Response): Promise<void> => {
     try {
+        const userId = req.params.id; // Get the user ID from the URL parameters
+        const friendId = req.body.friendId; // Get the friend ID from the request body
+
+        // Validate that friendId is provided
+        if (!friendId) {
+            res.status(400).json({ message: 'Friend ID is required' });
+            return; // Exit the function if friendId is not provided
+        }
+
+        // Find the user and remove the friend
         const user = await User.findByIdAndUpdate(
-            req.params.userId,
-            { $pull: { friends: req.params.friendId } },
+            userId,
+            { $pull: { friends: friendId } }, // Use $pull to remove the friend
             { new: true }
         );
+
         if (!user) {
-            res.json({ message: 'User not found' });
+            res.status(404).json({ message: 'User not found' });
+            return; // Exit the function if user is not found
         }
-        res.status(200).json(user);
+
+        res.status(200).json(user); // Send the updated user with the friend removed
     } catch (error) {
         res.status(500).json({ message: 'Error removing friend', error });
     }
-};
+}
