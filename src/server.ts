@@ -12,9 +12,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/api/users", userRoutes);
 app.use("/api/thoughts", thoughtRoutes);
 
-mongoose.connect("mongodb://127.0.0.1:27017/socialNetworkDB", {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+mongoose.connect("mongodb://127.0.0.1:27017/socialAppDB");
 
 app.listen(PORT, () => console.log(`🌍 Connected on localhost:${PORT}`));

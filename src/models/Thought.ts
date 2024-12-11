@@ -1,5 +1,8 @@
 import { Schema, model, Types } from "mongoose";
-import dateFormatter from "../utils/dateFormatter";
+
+function dateFormatter(value: Date): string {
+  return value.toISOString();
+}
 
 interface IReaction {
   reactionId: Types.ObjectId;
@@ -81,4 +84,5 @@ thoughtSchema.virtual("reactionCount").get(function () {
 });
 
 const Thought = model<IThought>("Thought", thoughtSchema);
+
 export default Thought;

@@ -1,29 +1,18 @@
-import { Router } from "express";
+import express from 'express';
 import {
-  getThoughts,
-  getThoughtById,
-  createThought,
-  updateThought,
-  deleteThought,
-  createReaction,
-  deleteReaction,
-} from "../../controllers/thoughtController";
+    getThoughts,
+    getThoughtById,
+    createThought,
+    updateThought,
+    deleteThought
+} from '../../controllers/thoughtController.js';
 
-const router = Router();
+const router = express.Router();
 
-router.route("/")
-  .get(getThoughts)
-  .post(createThought);
-
-router.route("/:thoughtId")
-  .get(getThoughtById)
-  .put(updateThought)
-  .delete(deleteThought);
-
-router.route("/:thoughtId/reactions")
-  .post(createReaction);
-
-router.route("/:thoughtId/reactions/:reactionId")
-  .delete(deleteReaction);
+router.get('/thoughts', getThoughts);
+router.get('/thoughts/:id', getThoughtById);
+router.post('/thoughts', createThought);
+router.put('/thoughts/:id', updateThought);
+router.delete('/thoughts/:id', deleteThought);
 
 export default router;
