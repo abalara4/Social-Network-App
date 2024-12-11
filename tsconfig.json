@@ -1,12 +1,23 @@
 {
-    "compilerOptions": {
-      "target": "ES6",
-      "module": "commonjs",
-      "strict": true,
-      "esModuleInterop": true,
-      "outDir": "dist"
-    },
-    "include": ["src/**/*"],
-    "exclude": ["dist"]
-  }
+  "compilerOptions": {
+    "target": "ES6",                    // Target modern JavaScript version
+    "module": "commonjs",              // Node.js uses CommonJS modules
+    "strict": true,                    // Enable strict type-checking options
+    "esModuleInterop": true,           // Ensure compatibility with CommonJS modules
+    "outDir": "dist",                  // Output folder for compiled files
+    "rootDir": ".",                    // Set root directory for source files
+    "resolveJsonModule": true,         // Allow importing .json files
+    "skipLibCheck": true,              // Skip type checks on declaration files
+    "baseUrl": ".",                    // Base directory for module resolution
+    "paths": {
+      "@models/*": ["src/models/*"],   // Alias for model files
+      "@controllers/*": ["src/controllers/*"],
+      "@routes/*": ["src/routes/*"],
+      "@seeds/*": ["seeds/*"]          // Alias for seeds folder
+    }
+  },
+  "include": ["src/**/*", "seeds/**/*"], // Include both source and seeds folders
+  "exclude": ["dist", "node_modules"]   // Exclude output and dependency folders
+}
+
   
