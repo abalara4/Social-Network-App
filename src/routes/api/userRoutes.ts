@@ -12,14 +12,21 @@ import {
 
 const router = Router();
 
-// Correctly defined GET route for all users
-router.get('/', getUsers);  // This maps to GET /api/users
-router.get('/:id', getUserById);  // This maps to GET /api/users/:id
-router.post('/', createUser);  // This maps to POST /api/users
-router.put('/:id', updateUser);  // This maps to PUT /api/users/:id
-router.delete('/:id', deleteUser);  // This maps to DELETE /api/users/:id
-router.post('/:userId/friends/:friendId', addFriend);  // This maps to POST /api/users/:userId/friends/:friendId
-router.delete('/:userId/friends/:friendId', removeFriend);  // This maps to DELETE /api/users/:userId/friends/:friendId
+router.route('/')
+    .get(getUsers)          // This maps to GET /api/users
+    .post(createUser);      // This maps to POST /api/users
+
+// /api/users/:id
+router.route('/:id')
+    .get(getUserById)      // This maps to GET /api/users/:id
+    .put(updateUser)       // This maps to PUT /api/users/:id
+    .delete(deleteUser);    // This maps to DELETE /api/users/:id
+
+// /api/users/:userId/friends/:friendId
+router.route('/:userId/friends/:friendId')
+    .post(addFriend)       // This maps to POST /api/users/:userId/friends/:friendId
+    .delete(removeFriend);  // This maps to DELETE /api/users/:userId/friends/:friendId
+
 
 
 export default router;

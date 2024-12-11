@@ -9,10 +9,14 @@ import {
 
 const router = express.Router();
 
-router.get('/thoughts', getThoughts);
-router.get('/thoughts/:id', getThoughtById);
-router.post('/thoughts', createThought);
-router.put('/thoughts/:id', updateThought);
-router.delete('/thoughts/:id', deleteThought);
+router.route('/')
+    .get(getThoughts)          // This maps to GET /api/thoughts
+    .post(createThought);      // This maps to POST /api/thoughts
+
+// /api/thoughts/:id
+router.route('/:id')
+    .get(getThoughtById)      // This maps to GET /api/thoughts/:id
+    .put(updateThought)       // This maps to PUT /api/thoughts/:id
+    .delete(deleteThought);    // This maps to DELETE /api/thoughts/:id
 
 export default router;
